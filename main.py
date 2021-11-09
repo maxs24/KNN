@@ -12,6 +12,7 @@ if __name__ == '__main__':
     points = ret[0]
     colors = ret[1]
     created_points = []
+    new_points = []
     Functions.draw(screen, points, colors, r)
     pygame.display.update()
     play = True
@@ -23,13 +24,15 @@ if __name__ == '__main__':
                 play = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    if colors[len(points) - 1] != (0,0,0):
+                    if colors[len(points) - 1] != (0,0,0) and optimal_neigh == 0:
                         points.append([event.pos[0], event.pos[1]])
                         colors.append((0,0,0))
                 if event.button == 3:
                     if optimal:
+                        new_points.append(len(points))
                         points.append([event.pos[0], event.pos[1]])
-                        colors.append(Functions.knn_optimal(points, colors, optimal_neigh, len(points) - 1))
+                        colors.append(Functions.knn_optimal(points, colors, new_points, optimal_neigh, len(points) - 1))
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
                     if colors[len(colors) - 1] == (0, 0, 0):

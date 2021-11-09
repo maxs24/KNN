@@ -34,7 +34,7 @@ def get_optimal_neighbors(points, colors, created_points):
     max = 0
     max_i = 0
     count_neigh = len(created_points)
-    for i in range(1, len(points) + 1):
+    for i in range(1, len(points) - count_neigh):
         count = knn(points, colors, created_points, i)
         if count > max:
             max = count
@@ -51,25 +51,25 @@ def knn(points, colors, created_points, k):
         for n in range(k):
             min = 1000
             min_i = 0
-            for j in range(len(points)):
+            for j in range(len(points) - len(created_points)):
                 distance = dist(points[i][0], points[i][1], points[j][0], points[j][1])
                 if j not in neighbors and distance < min and i != j:
                     min = distance
                     min_i = j
             neighbors.append(min_i)
         klasters = [0,0,0,0]
-        for i in neighbors:
-            if colors[i] == (255, 0, 0):
+        for p in neighbors:
+            if colors[p] == (255, 0, 0):
                 klasters[0] += 1
-            elif colors[i] == (0, 255, 0):
+            elif colors[p] == (0, 255, 0):
                 klasters[1] += 1
-            elif colors[i] == (0, 0, 255):
+            elif colors[p] == (0, 0, 255):
                 klasters[2] += 1
-            elif colors[i] == (255, 255, 0):
+            elif colors[p] == (255, 255, 0):
                 klasters[3] += 1
         max = 0
         max_i = 0
-        for o in range(len(klasters)):
+        for o in range(4):
             if max < klasters[o]:
                 max = klasters[o]
                 max_i = o
@@ -88,14 +88,14 @@ def knn(points, colors, created_points, k):
     return count
 
 
-def knn_optimal(points, colors, k, i):
+def knn_optimal(points, colors, new_points, k, i):
     neighbors = []
     for n in range(k):
         min = 1000
         min_i = 0
         for j in range(len(points)):
             distance = dist(points[i][0], points[i][1], points[j][0], points[j][1])
-            if j not in neighbors and distance < min and i != j:
+            if j not in neighbors and distance < min and i != j and (j not in new_points):
                 min = distance
                 min_i = j
         neighbors.append(min_i)
