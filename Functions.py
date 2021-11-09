@@ -33,11 +33,14 @@ def draw(screen, points, colors, r):
 def get_optimal_neighbors(points, colors, created_points):
     max = 0
     max_i = 0
+    count_neigh = len(created_points)
     for i in range(1, len(points) + 1):
         count = knn(points, colors, created_points, i)
         if count > max:
             max = count
             max_i = i
+        if max == count_neigh:
+            break
     return max_i
 
 
